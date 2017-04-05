@@ -1,37 +1,46 @@
-## Welcome to GitHub Pages
-[LINK](about.md)
-You can use the [editor on GitHub](https://github.com/avatarTechnologies/javaPos/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+## Avatar Java client
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+You can use this java client to send transactions to Avatar plataform.
 
-### Markdown
+### Usage
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```
+com.systemonenoc.avatar.client.JavaClient -help
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+```
+usage: Avatar java client [options]
+ -bid,--bid <arg>           Buyer TIN
+ -c,--cert <arg>            ATAX public certificate
+ -ccid,--cid <arg>          Buyer Cost Center Id
+ -cl,--client <arg>         Client type. g5 (default) or vsdc
+ -e,--endpoint <arg>        Endpoint Url
+ -h,--help                  Help command
+ -it,--iType <arg>          Invoice type. Normal|Pro Forma|Training
+ -m,--mrc <arg>             Machine registration code
+ -p,--private <arg>         RSA private key
+ -p12,--p12 <arg>           Client certificate for mutual auth.
+ -pass,--password <arg>     p12 password
+ -phone,--phone <arg>       Buyer phone
+ -pl,--place <arg>          Merchant location
+ -t,--tin <arg>             TIN number
+ -tA,--taxA <arg>           taxA. Default value is 0
+ -tB,--taxB <arg>           taxB. Default value is 18
+ -tC,--taxC <arg>           taxC. Default value is 16
+ -tD,--taxD <arg>           taxD. Default value is 32
+ -tr,--transactions <arg>   Number of transactions to send. One single
+                            thread.
+ -tt,--tType <arg>          Transaction type. Sale|Refund
+```
+### Samples
 
-### Jekyll Themes
+```
+# VSDC sample
+java -cp '/PATH/:/PATH/*' com.systemonenoc.avatar.client.JavaClient \
+ -t TIN -m MRC -e HOST -p PRIV.pem -c CERT.pem -cl vsdc -p12 SERIAL_NUMBER.p12 -pass PASS
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/avatarTechnologies/javaPos/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+# API sample
+java -cp '/PATH/:/PATH/*' com.systemonenoc.avatar.client.JavaClient \
+ -t TIN -m MRC -e HOST -p PRIV.pem -c CERT.pem
+```
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
