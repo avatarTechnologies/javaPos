@@ -1,8 +1,8 @@
-## Avatar Java client
+# Avatar Java client
 
 You can use this java client to send transactions to Avatar plataform.
 
-### Usage
+## Usage
 
 ```
 com.systemonenoc.avatar.client.JavaClient -help
@@ -32,14 +32,15 @@ usage: Avatar java client [options]
                             thread.
  -tt,--tType <arg>          Transaction type. Sale|Refund
 ```
-### Samples
+## Samples
 
+### VSDC sample
 ```
-# VSDC sample
 java -cp '/PATH/:/PATH/*' com.systemonenoc.avatar.client.JavaClient \
  -t TIN -m MRC -e HOST -p PRIV.pem -c CERT.pem -cl vsdc -p12 SERIAL_NUMBER.p12 -pass PASS
-
-# API sample
+```
+### API sample
+```
 java -cp '/PATH/:/PATH/*' com.systemonenoc.avatar.client.JavaClient \
  -t TIN -m MRC -e HOST -p PRIV.pem -c CERT.pem
 ```
