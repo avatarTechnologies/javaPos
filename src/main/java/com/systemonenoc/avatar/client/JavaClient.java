@@ -11,8 +11,6 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//java -cp '/home/inigo/restClient/:/home/inigo/restClient/*' com.systemonenoc.avatar.client.JavaClient -t 1 -m 356260059098152 -e https://avatar-dev.systemonenoc.com/avatar-vsdc/merchant/invoice -p testingCert.key.pem -c avatarRoot.nigeria-vt-crt.pem -cl vsdc -p12 1085.p12 -pass 03d190e533232
-//java -cp '/home/inigo/restClient/:/home/inigo/restClient/*' com.systemonenoc.avatar.client.JavaClient -t 123456 -m 356077050702461 -e https://atax5.avatar-technologies.com/avatar-api/invoice -p testingCert.key.pem -c avatarRoot.nigeria-vt-crt.pem
 public class JavaClient {
 	
 	private final static Logger logger = LoggerFactory.getLogger(JavaClient.class);
@@ -48,11 +46,16 @@ public class JavaClient {
 			options.addRequiredOption("t", "tin", true, "TIN number");
 			options.addRequiredOption("m", "mrc", true, "Machine registration code");
 			options.addRequiredOption("e", "endpoint", true, "Endpoint Url ");
-			options.addRequiredOption("p", "private", true, "RSA private key");
-			options.addRequiredOption("c", "cert", true, "ATAX public certificate");
-			options.addOption("h", "help", false, "Help command");
 			
 			options.addOption("cl", "client", true, "Client type. g5(defautl) or vsdc]");
+			
+			options.addOption("p", "private", true, "RSA private key");
+			options.addOption("c", "cert", true, "ATAX public certificate");
+			options.addOption("p12", "p12", true, "Client certificate for mutual auth.");
+			options.addOption("pass", "password", true, "p12 password");
+			
+			options.addOption("h", "help", false, "Help command");
+			
 			options.addOption("tr", "transactions", true, "Number of transactions to send. One single thread.");
 			options.addOption("tA", "taxA", true, "taxA. Default value is 0");
 			options.addOption("tB", "taxB", true, "taxB. Default value is 18");
@@ -64,8 +67,6 @@ public class JavaClient {
 			options.addOption("bid", "bid", true, "Buyer TIN");
 			options.addOption("ccid", "cid", true, "Buyer Cost Center Id");
 			options.addOption("phone", "phone", true, "Buyer phone");
-			options.addOption("p12", "p12", true, "Client certificate for mutual auth.");
-			options.addOption("pass", "password", true, "p12 password");
 			
 			CommandLineParser parser = new DefaultParser();
 			CommandLine line = parser.parse(options, args);
@@ -146,13 +147,12 @@ public class JavaClient {
 	public void send() throws Exception {
 		logger.debug("send");
 		
-		CryptoProvider.load(getClass().getClassLoader().getResource(pemFile).getFile(),
-				getClass().getClassLoader().getResource(privateKey).getFile());
-		
 		for (int i = 0; i <= transactions; i++) {
 			Invoice invoice = InvoiceService.createInvoice(tin, tt, it, mrc, bid, phone, ccid, pl, taxA, taxB, taxC,
 					taxD);
 			if (cl.toLowerCase().equals(G5)) {
+				CryptoProvider.load(getClass().getClassLoader().getResource(pemFile).getFile(),
+						getClass().getClassLoader().getResource(privateKey).getFile());
 				RestClient.sendG5(invoice, host);
 			} else if (cl.toLowerCase().equals(VSDC)) {
 				RestClient.sendVsdc(invoice, host, p12, pass);
