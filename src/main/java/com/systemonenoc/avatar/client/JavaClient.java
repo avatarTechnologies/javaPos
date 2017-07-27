@@ -151,6 +151,14 @@ public class JavaClient {
 			Invoice invoice = InvoiceService.createInvoice(tin, tt, it, mrc, bid, phone, ccid, pl, taxA, taxB, taxC,
 					taxD);
 			if (cl.toLowerCase().equals(G5)) {
+				if (pemFile == null) {
+					logger.error("Client's private key is mandatory if your are emulating a G5.");
+					return;
+				}
+				if (privateKey == null) {
+					logger.error("Server's Public key is mandatory if your are emulating a G5.");
+					return;
+				}
 				CryptoProvider.load(getClass().getClassLoader().getResource(pemFile).getFile(),
 						getClass().getClassLoader().getResource(privateKey).getFile());
 				RestClient.sendG5(invoice, host);
